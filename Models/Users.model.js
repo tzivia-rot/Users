@@ -39,7 +39,10 @@ let users = [
     { _id: '9', name: 'yy', email: '1@gmail.com', phoneNumber: '0556781234' },
 ]
 
-function get(){
+function Get(){
+    return users;
+}
+function GetById(){
     return users;
 }
 
@@ -58,3 +61,7 @@ function Update(id, user) {
 function Delete(id) {
     users=users.filter(user=>user._id!=id);
 }
+function ValidEmail(email){
+    
+}
+export default UserModel
