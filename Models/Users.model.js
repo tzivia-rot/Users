@@ -1,12 +1,4 @@
-// export interface User {
-//     _id: string;
-//     name: string;
-//     email: string;
-//     phoneNumber: string;
-// }
-
-
-const User= ({
+const User = ({
     _id:
     {
         type: String,
@@ -39,10 +31,28 @@ let users = [
     { _id: '9', name: 'yy', email: '1@gmail.com', phoneNumber: '0556781234' },
 ]
 
-function Get(){
-    return users;
+function NameValidation(name) {
+
 }
-function GetById(){
+
+function ValidEmail(email) {
+
+}
+
+function PhoneNumberValidation(PhoneNumber) {
+    const axios = require('axios');
+    axios.get(`https://phonevalidation.abstractapi.com/v1/?api_key=76ce3eacb8ff4fd79e87075ba8322cee&phone=+972${PhoneNumber}`
+    )
+        .then(() => {
+            return true;
+        })
+        .catch(() => {
+            return false;
+        });
+
+}
+
+function get() {
     return users;
 }
 
@@ -59,9 +69,7 @@ function Update(id, user) {
 }
 
 function Delete(id) {
-    users=users.filter(user=>user._id!=id);
+    users = users.filter(user => user._id != id);
 }
-function ValidEmail(email){
-    
-}
+
 export default UserModel

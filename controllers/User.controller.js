@@ -29,12 +29,24 @@ const UsersController = {
         }
     },
 
-    DeleteUser:  (req, res) => {
-        
+    DeleteUser: async (req, res) => {
+        try {
+            const id = req.body;
+            UserModel.Delete(id);
+        }
+        catch (e) {
+            res.status(404).json({ message: e.message });
+        }
     },
 
-    UpdateUser:(req,res)=>{
-
+    UpdateUser: async (req, res) => {
+        try {
+            const { id, user } = req.body;
+            UserModel.Update(id, user);
+        }
+        catch (e) {
+            res.status(404).json({ message: e.message });
+        }
     }
 }
 
