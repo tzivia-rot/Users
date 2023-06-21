@@ -16,16 +16,21 @@ const UsersController = {
             res.status(404).json({ message: e.message });
         }
     },
-    addUser: (req, res) => {
-        const { name, email, phone } = req.body;
+    addUser:  (req, res) => {
+        const {name,email,phone}=req.body;
+        if(UserModel.AllValid(name,email,phone))
+        {
+            try{
+                const newUser =  UserModel.Add({ name, email,phone });
+                res.json(newUser);
+            }
+            catch(e){
+                res.status(400).json({ message: e.message });
+            }
+        }
+        else
+            res.status(400).json({message:'the parms not valid'});
 
-        try {
-            const newUser = UserModel.Add({ name, email, phone });
-            res.json(newUser);
-        }
-        catch (e) {
-            res.status(400).json({ message: e.message });
-        }
     },
 
     DeleteUser: async (req, res) => {

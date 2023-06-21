@@ -32,13 +32,22 @@ let users = [
     { _id: '8', name: 'rr', email: '1@gmail.com', phoneNumber: '0556781234' },
     { _id: '9', name: 'yy', email: '1@gmail.com', phoneNumber: '0556781234' },
 ]
+function AllValid(name,email,phoneNumber){
+    if(name==null||email==null||phoneNumber==null)
+        return false;
+    if(NameValidation(name)&&ValidEmail(email)&&PhoneNumberValidation(phoneNumber))
+        return true;
+    return false
+}
 
 function NameValidation(name) {
-
+    const regex = /^[a-zA-Z]+$/;
+    return regex.test(name);
 }
 
 function ValidEmail(email) {
-
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
 }
 
 function PhoneNumberValidation(PhoneNumber) {
