@@ -35,22 +35,22 @@ let users = [
 function AllValid(name,email,phoneNumber){
     if(name==null||email==null||phoneNumber==null)
         return false;
-    if(NameValidation(name)&&ValidEmail(email)&&PhoneNumberValidation(phoneNumber))
+    if(ValidateName(name)&&ValidateEmail(email)&&ValidatePhoneNumber(phoneNumber))
         return true;
     return false
 }
 
-function NameValidation(name) {
+function ValidateName(name) {
     const regex = /^[a-zA-Z]+$/;
     return regex.test(name);
 }
 
-function ValidEmail(email) {
+function ValidateEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
 
-function PhoneNumberValidation(PhoneNumber) {
+function ValidatePhoneNumber(PhoneNumber) {
     axios.get(`https://phonevalidation.abstractapi.com/v1/?api_key=76ce3eacb8ff4fd79e87075ba8322cee&phone=+972${PhoneNumber}`
     )
         .then(() => {
@@ -82,9 +82,7 @@ function Delete(id) {
 }
 
 const UserModel = {
-    NameValidation,
-    ValidEmail,
-    PhoneNumberValidation,
+    AllValid,
     Get,
     Add,
     Update,
