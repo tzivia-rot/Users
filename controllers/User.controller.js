@@ -1,4 +1,5 @@
 import UserModel from "../Models/Users.model.js";
+import { HDate } from '@hebcal/core';
 
 const UsersController = {
 
@@ -17,11 +18,14 @@ const UsersController = {
         }
     },
     addUser:  (req, res) => {
-        const {name,email,phone}=req.body;
+        console.log(req.body);
+        const {name,email,phone,date}=req.body;
+       
         if(UserModel.AllValid(name,email,phone))
         {
             try{
-                const newUser =  UserModel.Add({ name, email,phone });
+                const hdate=new HDate(new Date(date));
+                const newUser =  UserModel.Add({ name, email,phone ,hdate});
                 res.json(newUser);
             }
             catch(e){
@@ -34,8 +38,9 @@ const UsersController = {
     },
 
     DeleteUser: async (req, res) => {
+        console.log('del')
         try {
-            const id = req.params;
+            const {id} = req.body;
             UserModel.Delete(id);
         }
         catch (e) {
@@ -44,8 +49,9 @@ const UsersController = {
     },
 
     UpdateUser: async (req, res) => {
+        console.log("up")
         try {
-            const { id } = req.params;
+            const { id } = req.params.id;
             const { user } = req.body;
             UserModel.Update(id, user);
         }

@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { HDate } from '@hebcal/core';
 const User = ({
     _id:
     {
@@ -19,6 +19,10 @@ const User = ({
         type: String,
         require: true
     },
+    date:{
+        type:HDate,
+        require:true
+    }
 })
 
 let users = [
@@ -33,20 +37,25 @@ let users = [
     { _id: '9', name: 'yy', email: '1@gmail.com', phoneNumber: '0556781234' },
 ]
 function AllValid(name,email,phoneNumber){
-    if(name==null||email==null||phoneNumber==null)
+    if(name===null||email===null||phoneNumber===null){
         return false;
-    if(ValidateName(name)&&ValidateEmail(email)&&ValidatePhoneNumber(phoneNumber))
+
+    }
+    if(ValidateName(name)==true&&ValidateEmail(email)==true&&ValidatePhoneNumber(phoneNumber)==true)
         return true;
+    
     return false
 }
 
 function ValidateName(name) {
     const regex = /^[a-zA-Z]+$/;
+    // console.log(regex.test(name));
     return regex.test(name);
 }
 
 function ValidateEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // console.log(regex.test(email))
     return regex.test(email);
 }
 
@@ -54,11 +63,14 @@ function ValidatePhoneNumber(PhoneNumber) {
     axios.get(`https://phonevalidation.abstractapi.com/v1/?api_key=76ce3eacb8ff4fd79e87075ba8322cee&phone=+972${PhoneNumber}`
     )
         .then(() => {
+            // console.log('yes')
             return true;
         })
         .catch(() => {
+            console.log('no')
             return false;
         });
+    return true;
 }
 
 function Get() {
@@ -67,6 +79,7 @@ function Get() {
 
 function Add(user) {
     const newUser = user;
+    newUser._id=users.length+1;
     users.push(newUser);
 }
 
