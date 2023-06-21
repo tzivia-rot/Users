@@ -1,13 +1,13 @@
-import UserModel from "../Models/Users.model.js";
 import { HDate } from '@hebcal/core';
 
-const UsersController = {
+import UserModel from "../Models/Users.model.js";
 
-    getUsers: (req, res) => {
+const UsersController = {
+    GetUsers: (req, res) => {
         let users = UserModel.Get();
         res.json(users);
     },
-    getById: (req, res) => {
+    GetById: (req, res) => {
         try {
             const { id } = req.body;
             let user = UserModel.getById(id);
@@ -17,31 +17,27 @@ const UsersController = {
             res.status(404).json({ message: e.message });
         }
     },
-    addUser:  (req, res) => {
-        console.log(req.body);
-        const {name,email,phone,date}=req.body;
-       
-        if(UserModel.AllValid(name,email,phone))
-        {
-            try{
-                const hdate=new HDate(new Date(date));
-                const newUser =  UserModel.Add({ name, email,phone ,hdate});
+    AddUser: (req, res) => {
+        const { name, email, phone, date } = req.body;
+        if (UserModel.AllValid(name, email, phone)) {
+            try {
+                const hdate = new HDate(new Date(date));
+                const newUser = UserModel.Add({ name, email, phone, hdate });
                 res.json(newUser);
             }
-            catch(e){
+            catch (e) {
                 res.status(400).json({ message: e.message });
             }
         }
         else
-            res.status(400).json({message:'the parms not valid'});
-
+            res.status(400).json({ message: 'the parms not valid' });
     },
 
     DeleteUser: async (req, res) => {
-        console.log('del')
         try {
-            const {id} = req.body;
+            const { id } = req.params;
             UserModel.Delete(id);
+            res.status(200);
         }
         catch (e) {
             res.status(404).json({ message: e.message });
@@ -49,11 +45,11 @@ const UsersController = {
     },
 
     UpdateUser: async (req, res) => {
-        console.log("up")
         try {
-            const { id } = req.params.id;
-            const { user } = req.body;
-            UserModel.Update(id, user);
+            const { id } = req.params;
+            const user = req.body;
+            UserModel.Update(id, req.body);
+            res.status(200);
         }
         catch (e) {
             res.status(404).json({ message: e.message });
