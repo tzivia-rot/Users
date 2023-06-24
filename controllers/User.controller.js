@@ -19,30 +19,23 @@ const UsersController = {
         }
     },
 
-    AddUser: (req, res) => {
-        const user = req.body;
-        console.log(user);
-        if (UserModel.AllValid(user.name,user.email,user.phoneNumber)) {
-            console.log('valid');
-            try {
-                const hdate = new HDate(new Date(user.date));
-                user.date=hdate;
-                const newUser = UserModel.Add(user);
-                res.json(newUser);
-            }
-            catch (e) {
-                res.status(400).json({ message: e.message });
-            }
+    AddUser:  (req, res) => {
+        const {name,email,phoneNumber,date}=req.body;
+        try{
+            const hdate=new HDate(new Date(date));
+            const newUser =  UserModel.Add({ name, email,phoneNumber ,hdate});
+            res.json(newUser);
         }
-        else
-            res.status(400).json({ message: 'the parms not valid' });
+        catch(e){
+            res.status(400).json({ message: e.message });
+        }
     },
 
     DeleteUser: async (req, res) => {
+        console.log('del')
         try {
-            const { id } = req.params;
+            const {id} = req.body;
             UserModel.Delete(id);
-            res.status(200);
         }
         catch (e) {
             res.status(404).json({ message: e.message });
@@ -51,10 +44,9 @@ const UsersController = {
 
     UpdateUser: async (req, res) => {
         try {
-            const { id } = req.params;
-            const user = req.body;
+            const { id } = req.params.id;
+            const { user } = req.body;
             UserModel.Update(id, user);
-            res.status(200);
         }
         catch (e) {
             res.status(404).json({ message: e.message });
